@@ -28,6 +28,10 @@ kotlin {
             jvmTarget = JvmTarget.JVM_11
         }
 
+        androidResources {
+            enable = true
+        }
+
         withHostTest {}
         withDeviceTest {}
     }
@@ -43,6 +47,7 @@ kotlin {
             implementation(libs.compose.material3)
             implementation(libs.compose.ui)
             implementation(libs.compose.uiToolingPreview)
+            implementation(libs.compose.components.resources)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
 
@@ -72,4 +77,10 @@ kotlin {
             implementation(libs.kotlin.test)
         }
     }
+}
+
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "cyvault.authentication.generated.resources"
+    generateResClass = always
 }

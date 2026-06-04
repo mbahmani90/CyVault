@@ -29,8 +29,20 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import cyvault.authentication.generated.resources.Res
+import cyvault.authentication.generated.resources.login_email_label
+import cyvault.authentication.generated.resources.login_forgot_password
+import cyvault.authentication.generated.resources.login_password_hide
+import cyvault.authentication.generated.resources.login_password_hide_description
+import cyvault.authentication.generated.resources.login_password_label
+import cyvault.authentication.generated.resources.login_password_show
+import cyvault.authentication.generated.resources.login_password_show_description
+import cyvault.authentication.generated.resources.login_register_link
+import cyvault.authentication.generated.resources.login_sign_in_button
+import cyvault.authentication.generated.resources.login_title
 import com.cypressit.authentication.presentation.viewmodel.AuthIntent
 import com.cypressit.authentication.presentation.viewmodel.AuthState
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun LoginScreen(
@@ -48,14 +60,17 @@ fun LoginScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(text = "Welcome to Cyvault", style = MaterialTheme.typography.headlineMedium)
+        Text(
+            text = stringResource(Res.string.login_title),
+            style = MaterialTheme.typography.headlineMedium,
+        )
 
         Spacer(Modifier.height(32.dp))
 
         OutlinedTextField(
             value = state.email,
             onValueChange = { onIntent(AuthIntent.EmailChanged(it)) },
-            label = { Text("Email") },
+            label = { Text(stringResource(Res.string.login_email_label)) },
             isError = state.emailError != null,
             supportingText = state.emailError?.let { { Text(it) } },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next),
@@ -69,14 +84,14 @@ fun LoginScreen(
         OutlinedTextField(
             value = state.password,
             onValueChange = { onIntent(AuthIntent.PasswordChanged(it)) },
-            label = { Text("Password") },
+            label = { Text(stringResource(Res.string.login_password_label)) },
             isError = state.passwordError != null,
             supportingText = state.passwordError?.let { { Text(it) } },
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
                 TextButton(onClick = { passwordVisible = !passwordVisible }) {
                     Text(
-                        text = if (passwordVisible) "Hide" else "Show",
+                        text = stringResource(if (passwordVisible) Res.string.login_password_hide else Res.string.login_password_show),
                         style = MaterialTheme.typography.labelMedium,
                     )
                 }
@@ -95,19 +110,22 @@ fun LoginScreen(
         if (state.isLoading) {
             CircularProgressIndicator()
         } else {
-            Button(onClick = { onIntent(AuthIntent.SubmitLogin) }, modifier = Modifier.fillMaxWidth()) {
-                Text("Sign In")
+            Button(
+                onClick = { onIntent(AuthIntent.SubmitLogin) },
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text(stringResource(Res.string.login_sign_in_button))
             }
         }
 
         TextButton(onClick = { onIntent(AuthIntent.ShowForgotPassword) }) {
-            Text("Forgot Password?")
+            Text(stringResource(Res.string.login_forgot_password))
         }
 
         Spacer(Modifier.height(8.dp))
 
         TextButton(onClick = { onIntent(AuthIntent.ToggleMode) }) {
-            Text("Don't have an account? Register")
+            Text(stringResource(Res.string.login_register_link))
         }
     }
 }
