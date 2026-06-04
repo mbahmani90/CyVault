@@ -1,5 +1,6 @@
 package com.cypressit.authentication.data.remote
 
+import com.cypressit.authentication.data.dto.ForgotPasswordRequestDto
 import com.cypressit.authentication.data.dto.LoginRequestDto
 import com.cypressit.authentication.data.dto.LoginResponseDto
 import com.cypressit.authentication.data.dto.RegisterRequestDto
@@ -28,4 +29,11 @@ class AuthApiService(private val client: HttpClient) {
             contentType(ContentType.Application.Json)
             setBody(request)
         }.body()
+
+    suspend fun forgotPassword(request: ForgotPasswordRequestDto) {
+        client.post("$BASE_URL/auth/forgot-password") {
+            contentType(ContentType.Application.Json)
+            setBody(request)
+        }
+    }
 }

@@ -3,6 +3,7 @@ package com.cypressit.authentication.di
 import com.cypressit.authentication.data.remote.AuthApiService
 import com.cypressit.authentication.data.repository.AuthRepositoryImpl
 import com.cypressit.authentication.domain.repository.AuthRepository
+import com.cypressit.authentication.domain.usecase.ForgotPasswordUseCase
 import com.cypressit.authentication.domain.usecase.LoginUseCase
 import com.cypressit.authentication.domain.usecase.RegisterUseCase
 import com.cypressit.authentication.presentation.viewmodel.AuthViewModel
@@ -19,6 +20,7 @@ val authModule = module {
     // Use cases
     factory { LoginUseCase(get()) }
     factory { RegisterUseCase(get()) }
+    factory { ForgotPasswordUseCase(get()) }
 
     // ViewModel
     viewModelOf(::AuthViewModel)

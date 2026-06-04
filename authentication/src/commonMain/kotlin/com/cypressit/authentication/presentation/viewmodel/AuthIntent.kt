@@ -8,4 +8,7 @@ sealed class AuthIntent {
     object SubmitLogin : AuthIntent()
     object SubmitRegister : AuthIntent()
     object ToggleMode : AuthIntent()
+    object ShowForgotPassword : AuthIntent()
+    object BackToLogin : AuthIntent()
+    object SubmitForgotPassword : AuthIntent()
 }

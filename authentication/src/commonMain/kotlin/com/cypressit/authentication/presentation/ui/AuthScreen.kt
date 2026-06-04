@@ -29,6 +29,7 @@ fun AuthScreen(
             when (effect) {
                 AuthEffect.NavigateToHome -> onAuthSuccess()
                 is AuthEffect.ShowError -> snackbarHostState.showSnackbar(effect.message)
+                is AuthEffect.ShowMessage -> snackbarHostState.showSnackbar(effect.message)
             }
         }
     }
@@ -37,10 +38,22 @@ fun AuthScreen(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         containerColor = MaterialTheme.colorScheme.background,
     ) { _ ->
-        if (state.isRegisterMode) {
-            RegisterScreen(state = state, onIntent = viewModel::onIntent, modifier = modifier.fillMaxSize())
-        } else {
-            LoginScreen(state = state, onIntent = viewModel::onIntent, modifier = modifier.fillMaxSize())
+        when {
+            state.isForgotPasswordMode -> ForgotPasswordScreen(
+                state = state,
+                onIntent = viewModel::onIntent,
+                modifier = modifier.fillMaxSize(),
+            )
+            state.isRegisterMode -> RegisterScreen(
+                state = state,
+                onIntent = viewModel::onIntent,
+                modifier = modifier.fillMaxSize(),
+            )
+            else -> LoginScreen(
+                state = state,
+                onIntent = viewModel::onIntent,
+                modifier = modifier.fillMaxSize(),
+            )
         }
     }
 }

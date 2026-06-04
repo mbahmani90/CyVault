@@ -1,5 +1,6 @@
 package com.cypressit.authentication.data.repository
 
+import com.cypressit.authentication.data.dto.ForgotPasswordRequestDto
 import com.cypressit.authentication.data.dto.LoginRequestDto
 import com.cypressit.authentication.data.dto.RegisterRequestDto
 import com.cypressit.authentication.data.mapper.toDomain
@@ -19,5 +20,10 @@ class AuthRepositoryImpl(
     override suspend fun register(name: String, email: String, password: String): Result<User> =
         runCatching {
             apiService.register(RegisterRequestDto(name, email, password)).toDomain()
+        }
+
+    override suspend fun forgotPassword(email: String): Result<Unit> =
+        runCatching {
+            apiService.forgotPassword(ForgotPasswordRequestDto(email))
         }
 }

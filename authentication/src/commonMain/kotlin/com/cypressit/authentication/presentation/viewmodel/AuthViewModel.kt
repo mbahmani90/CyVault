@@ -2,6 +2,7 @@ package com.cypressit.authentication.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cypressit.authentication.domain.usecase.ForgotPasswordUseCase
 import com.cypressit.authentication.domain.usecase.LoginUseCase
 import com.cypressit.authentication.domain.usecase.RegisterUseCase
 import kotlinx.coroutines.channels.Channel
@@ -15,6 +16,7 @@ import kotlinx.coroutines.launch
 class AuthViewModel(
     private val loginUseCase: LoginUseCase,
     private val registerUseCase: RegisterUseCase,
+    private val forgotPasswordUseCase: ForgotPasswordUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(AuthState())
@@ -38,11 +40,19 @@ class AuthViewModel(
                 _state.update { it.copy(confirmPassword = intent.confirmPassword, confirmPasswordError = null) }
 
             AuthIntent.ToggleMode ->
-                _state.update { it.copy(isRegisterMode = !it.isRegisterMode) }
+                _state.update { it.copy(isRegisterMode = !it.isRegisterMode, isForgotPasswordMode = false) }
+
+            AuthIntent.ShowForgotPassword ->
+                _state.update { it.copy(isForgotPasswordMode = true, isRegisterMode = false, emailError = null) }
+
+            AuthIntent.BackToLogin ->
+                _state.update { it.copy(isForgotPasswordMode = false, isRegisterMode = false, emailError = null) }
 
             AuthIntent.SubmitLogin -> handleLogin()
 
             AuthIntent.SubmitRegister -> handleRegister()
+
+            AuthIntent.SubmitForgotPassword -> handleForgotPassword()
         }
     }
 
@@ -66,6 +76,24 @@ class AuthViewModel(
             registerUseCase(s.name.trim(), s.email.trim(), s.password)
                 .onSuccess { _effect.send(AuthEffect.NavigateToHome) }
                 .onFailure { _effect.send(AuthEffect.ShowError(it.message ?: "Registration failed. Please try again.")) }
+            _state.update { it.copy(isLoading = false) }
+        }
+    }
+
+    private fun handleForgotPassword() {
+        val s = _state.value
+        if (s.email.isBlank() || !s.email.contains('@')) {
+            _state.update { it.copy(emailError = "Enter a valid email address") }
+            return
+        }
+        viewModelScope.launch {
+            _state.update { it.copy(isLoading = true) }
+            forgotPasswordUseCase(s.email.trim())
+                .onSuccess {
+                    _effect.send(AuthEffect.ShowMessage("Password reset email sent. Please check your inbox."))
+                    _state.update { it.copy(isForgotPasswordMode = false) }
+                }
+                .onFailure { _effect.send(AuthEffect.ShowError(it.message ?: "Failed to send reset email. Please try again.")) }
             _state.update { it.copy(isLoading = false) }
         }
     }

@@ -1,6 +1,7 @@
 package com.cypressit.cyvault
 
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -14,7 +15,6 @@ fun App() {
         var isAuthenticated by remember { mutableStateOf(false) }
 
         if (isAuthenticated) {
-            // TODO: replace with real Home screen / navigation graph
             HomeScreen()
         } else {
             AuthScreen(
@@ -27,5 +27,5 @@ fun App() {
 /** Temporary placeholder until the Home feature is built. */
 @Composable
 private fun HomeScreen() {
-    androidx.compose.material3.Text("🎉 You're in! Home screen coming soon.")
+    Text("🎉 You're in! Home screen coming soon.")
 }
