@@ -33,10 +33,8 @@ import cyvault.authentication.generated.resources.Res
 import cyvault.authentication.generated.resources.login_email_label
 import cyvault.authentication.generated.resources.login_forgot_password
 import cyvault.authentication.generated.resources.login_password_hide
-import cyvault.authentication.generated.resources.login_password_hide_description
 import cyvault.authentication.generated.resources.login_password_label
 import cyvault.authentication.generated.resources.login_password_show
-import cyvault.authentication.generated.resources.login_password_show_description
 import cyvault.authentication.generated.resources.login_register_link
 import cyvault.authentication.generated.resources.login_sign_in_button
 import cyvault.authentication.generated.resources.login_title
