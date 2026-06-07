@@ -67,6 +67,10 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.ktor.client.okhttp)
+
+            // Amplify
+            implementation(libs.amplify.core)
+            implementation(libs.amplify.auth.cognito)
         }
 
         iosMain.dependencies {
