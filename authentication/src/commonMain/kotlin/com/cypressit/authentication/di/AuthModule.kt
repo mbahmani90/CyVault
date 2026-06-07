@@ -3,6 +3,7 @@ package com.cypressit.authentication.di
 import com.cypressit.authentication.data.remote.AuthApiService
 import com.cypressit.authentication.data.repository.AuthRepositoryImpl
 import com.cypressit.authentication.domain.repository.AuthRepository
+import com.cypressit.authentication.domain.usecase.ConfirmSignUpUseCase
 import com.cypressit.authentication.domain.usecase.ForgotPasswordUseCase
 import com.cypressit.authentication.domain.usecase.LoginUseCase
 import com.cypressit.authentication.domain.usecase.RegisterUseCase
@@ -12,7 +13,7 @@ import org.koin.dsl.module
 
 val authModule = module {
     // Remote
-    single { AuthApiService(get()) }
+    single { AuthApiService() }
 
     // Repository
     single<AuthRepository> { AuthRepositoryImpl(get()) }
@@ -20,6 +21,7 @@ val authModule = module {
     // Use cases
     factory { LoginUseCase(get()) }
     factory { RegisterUseCase(get()) }
+    factory { ConfirmSignUpUseCase(get()) }
     factory { ForgotPasswordUseCase(get()) }
 
     // ViewModel

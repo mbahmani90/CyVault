@@ -12,7 +12,13 @@ kotlin {
     }
 }
 dependencies {
+    coreLibraryDesugaring(libs.android.desugar.jdk.libs)
+
     implementation(projects.app)
+
+    // Amplify (needed for initialization in Application class)
+    implementation(libs.amplify.core)
+    implementation(libs.amplify.auth.cognito)
 
     implementation(libs.koin.android)
     implementation(libs.androidx.activity.compose)
@@ -45,5 +51,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+        isCoreLibraryDesugaringEnabled = true
     }
 }

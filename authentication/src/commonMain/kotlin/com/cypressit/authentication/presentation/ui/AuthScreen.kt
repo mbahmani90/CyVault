@@ -39,6 +39,11 @@ fun AuthScreen(
         containerColor = MaterialTheme.colorScheme.background,
     ) { _ ->
         when {
+            state.isVerificationMode -> VerificationScreen(
+                state = state,
+                onIntent = viewModel::onIntent,
+                modifier = modifier.fillMaxSize(),
+            )
             state.isForgotPasswordMode -> ForgotPasswordScreen(
                 state = state,
                 onIntent = viewModel::onIntent,

@@ -6,32 +6,42 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		E226608E2FD592A40072E1F6 /* AWSCognitoAuthPlugin in Frameworks */ = {isa = PBXBuildFile; productRef = E226608D2FD592A40072E1F6 /* AWSCognitoAuthPlugin */; };
+		E22660902FD592A40072E1F6 /* Amplify in Frameworks */ = {isa = PBXBuildFile; productRef = E226608F2FD592A40072E1F6 /* Amplify */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		A1E229EF27B066D485346C56 /* CyVault.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CyVault.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		1F23D6849C50818CC2EE96E0 /* Exceptions for "iosApp" folder in "iosApp" target */ = {
+		E22660AC2FD593510072E1F6 /* Exceptions for "iosApp" folder in "iosApp" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				amplify_outputs.json,
+				AmplifyAuthBridge.swift,
+				Assets.xcassets,
+				ContentView.swift,
+				iOSApp.swift,
+				"Preview Content/Preview Assets.xcassets",
 			);
 			target = E21C0BE33A1BD4D67F7F034D /* iosApp */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		17AF7DA94BAEFCDE78EDB89F /* iosApp */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				1F23D6849C50818CC2EE96E0 /* Exceptions for "iosApp" folder in "iosApp" target */,
-			);
-			path = iosApp;
-			sourceTree = "<group>";
-		};
 		35A9F3A341AB96E68EF07141 /* Configuration */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Configuration;
+			sourceTree = "<group>";
+		};
+		E22660A62FD593500072E1F6 /* iosApp */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				E22660AC2FD593510072E1F6 /* Exceptions for "iosApp" folder in "iosApp" target */,
+			);
+			path = iosApp;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -41,6 +51,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E226608E2FD592A40072E1F6 /* AWSCognitoAuthPlugin in Frameworks */,
+				E22660902FD592A40072E1F6 /* Amplify in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -50,8 +62,8 @@
 		190499734F4960ADBABF585D = {
 			isa = PBXGroup;
 			children = (
+				E22660A62FD593500072E1F6 /* iosApp */,
 				35A9F3A341AB96E68EF07141 /* Configuration */,
-				17AF7DA94BAEFCDE78EDB89F /* iosApp */,
 				B24E783A58140070B568D307 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -80,11 +92,10 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				17AF7DA94BAEFCDE78EDB89F /* iosApp */,
-			);
 			name = iosApp;
 			packageProductDependencies = (
+				E226608D2FD592A40072E1F6 /* AWSCognitoAuthPlugin */,
+				E226608F2FD592A40072E1F6 /* Amplify */,
 			);
 			productName = iosApp;
 			productReference = A1E229EF27B066D485346C56 /* CyVault.app */;
@@ -114,6 +125,9 @@
 			);
 			mainGroup = 190499734F4960ADBABF585D;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				E226608C2FD592A40072E1F6 /* XCRemoteSwiftPackageReference "amplify-swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B24E783A58140070B568D307 /* Products */;
 			projectDirPath = "";
@@ -368,6 +382,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		E226608C2FD592A40072E1F6 /* XCRemoteSwiftPackageReference "amplify-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/aws-amplify/amplify-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.58.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E226608D2FD592A40072E1F6 /* AWSCognitoAuthPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E226608C2FD592A40072E1F6 /* XCRemoteSwiftPackageReference "amplify-swift" */;
+			productName = AWSCognitoAuthPlugin;
+		};
+		E226608F2FD592A40072E1F6 /* Amplify */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E226608C2FD592A40072E1F6 /* XCRemoteSwiftPackageReference "amplify-swift" */;
+			productName = Amplify;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 32E93E70CF71D9D9447D1A61 /* Project object */;
 }

@@ -1,6 +1,7 @@
 [versions]
 agp = "9.2.1"
 amplify = "2.27.0"
+android-desugar-jdk = "2.1.5"
 android-compileSdk = "37"
 android-minSdk = "24"
 android-targetSdk = "36"
@@ -45,6 +46,9 @@ compose-material-icons-extended = { module = "org.jetbrains.compose.material:mat
 # Amplify
 amplify-core = { module = "com.amplifyframework:core-kotlin", version.ref = "amplify" }
 amplify-auth-cognito = { module = "com.amplifyframework:aws-auth-cognito", version.ref = "amplify" }
+
+# Desugaring
+android-desugar-jdk-libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "android-desugar-jdk" }
 
 # Ktor
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }

@@ -2,6 +2,7 @@ package com.cypressit.authentication.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cypressit.authentication.domain.usecase.ConfirmSignUpUseCase
 import com.cypressit.authentication.domain.usecase.ForgotPasswordUseCase
 import com.cypressit.authentication.domain.usecase.LoginUseCase
 import com.cypressit.authentication.domain.usecase.RegisterUseCase
@@ -16,6 +17,7 @@ import kotlinx.coroutines.launch
 class AuthViewModel(
     private val loginUseCase: LoginUseCase,
     private val registerUseCase: RegisterUseCase,
+    private val confirmSignUpUseCase: ConfirmSignUpUseCase,
     private val forgotPasswordUseCase: ForgotPasswordUseCase,
 ) : ViewModel() {
 
@@ -39,6 +41,9 @@ class AuthViewModel(
             is AuthIntent.ConfirmPasswordChanged ->
                 _state.update { it.copy(confirmPassword = intent.confirmPassword, confirmPasswordError = null) }
 
+            is AuthIntent.VerificationCodeChanged ->
+                _state.update { it.copy(verificationCode = intent.code, verificationCodeError = null) }
+
             AuthIntent.ToggleMode ->
                 _state.update { it.copy(isRegisterMode = !it.isRegisterMode, isForgotPasswordMode = false) }
 
@@ -46,11 +51,13 @@ class AuthViewModel(
                 _state.update { it.copy(isForgotPasswordMode = true, isRegisterMode = false, emailError = null) }
 
             AuthIntent.BackToLogin ->
-                _state.update { it.copy(isForgotPasswordMode = false, isRegisterMode = false, emailError = null) }
+                _state.update { it.copy(isForgotPasswordMode = false, isRegisterMode = false, isVerificationMode = false, emailError = null) }
 
             AuthIntent.SubmitLogin -> handleLogin()
 
             AuthIntent.SubmitRegister -> handleRegister()
+
+            AuthIntent.SubmitVerification -> handleVerification()
 
             AuthIntent.SubmitForgotPassword -> handleForgotPassword()
         }
@@ -74,8 +81,25 @@ class AuthViewModel(
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true) }
             registerUseCase(s.name.trim(), s.email.trim(), s.password)
-                .onSuccess { _effect.send(AuthEffect.NavigateToHome) }
+                .onSuccess {
+                    _state.update { it.copy(isVerificationMode = true, isRegisterMode = false) }
+                }
                 .onFailure { _effect.send(AuthEffect.ShowError(it.message ?: "Registration failed. Please try again.")) }
+            _state.update { it.copy(isLoading = false) }
+        }
+    }
+
+    private fun handleVerification() {
+        val s = _state.value
+        if (s.verificationCode.isBlank()) {
+            _state.update { it.copy(verificationCodeError = "Please enter the verification code") }
+            return
+        }
+        viewModelScope.launch {
+            _state.update { it.copy(isLoading = true) }
+            confirmSignUpUseCase(s.email.trim(), s.verificationCode.trim())
+                .onSuccess { _effect.send(AuthEffect.NavigateToHome) }
+                .onFailure { _effect.send(AuthEffect.ShowError(it.message ?: "Verification failed. Please try again.")) }
             _state.update { it.copy(isLoading = false) }
         }
     }

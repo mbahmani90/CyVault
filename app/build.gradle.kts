@@ -16,6 +16,7 @@ kotlin {
             // Named CyVaultApp to avoid conflicting with Swift's built-in App protocol
             baseName = "CyVaultApp"
             isStatic = true
+            export(projects.core)
         }
     }
 
@@ -32,7 +33,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             // Core infrastructure
-            implementation(projects.core)
+            api(projects.core)
 
             // Feature modules — add every new feature here
             implementation(projects.authentication)
