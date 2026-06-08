@@ -7,4 +7,7 @@ expect class AuthApiService() {
     suspend fun register(name: String, email: String, password: String)
     suspend fun confirmSignUp(email: String, code: String)
     suspend fun forgotPassword(email: String)
+    suspend fun signOut()
+    suspend fun getCurrentUser(): User?
+    suspend fun signInWithGoogle(): User
 }

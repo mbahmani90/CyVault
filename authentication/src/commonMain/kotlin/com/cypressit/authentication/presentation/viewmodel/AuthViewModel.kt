@@ -4,8 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cypressit.authentication.domain.usecase.ConfirmSignUpUseCase
 import com.cypressit.authentication.domain.usecase.ForgotPasswordUseCase
+import com.cypressit.authentication.domain.usecase.GetCurrentUserUseCase
 import com.cypressit.authentication.domain.usecase.LoginUseCase
 import com.cypressit.authentication.domain.usecase.RegisterUseCase
+import com.cypressit.authentication.domain.usecase.SignInWithGoogleUseCase
+import com.cypressit.authentication.domain.usecase.SignOutUseCase
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,6 +22,9 @@ class AuthViewModel(
     private val registerUseCase: RegisterUseCase,
     private val confirmSignUpUseCase: ConfirmSignUpUseCase,
     private val forgotPasswordUseCase: ForgotPasswordUseCase,
+    private val signOutUseCase: SignOutUseCase,
+    private val getCurrentUserUseCase: GetCurrentUserUseCase,
+    private val signInWithGoogleUseCase: SignInWithGoogleUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(AuthState())
@@ -26,6 +32,19 @@ class AuthViewModel(
 
     private val _effect = Channel<AuthEffect>(Channel.BUFFERED)
     val effect = _effect.receiveAsFlow()
+
+    init {
+        checkCurrentSession()
+    }
+
+    private fun checkCurrentSession() {
+        viewModelScope.launch {
+            val user = getCurrentUserUseCase()
+            if (user != null) {
+                _effect.send(AuthEffect.NavigateToHome)
+            }
+        }
+    }
 
     fun onIntent(intent: AuthIntent) {
         when (intent) {
@@ -54,12 +73,10 @@ class AuthViewModel(
                 _state.update { it.copy(isForgotPasswordMode = false, isRegisterMode = false, isVerificationMode = false, emailError = null) }
 
             AuthIntent.SubmitLogin -> handleLogin()
-
             AuthIntent.SubmitRegister -> handleRegister()
-
             AuthIntent.SubmitVerification -> handleVerification()
-
             AuthIntent.SubmitForgotPassword -> handleForgotPassword()
+            AuthIntent.SignInWithGoogle -> handleGoogleSignIn()
         }
     }
 
@@ -100,6 +117,16 @@ class AuthViewModel(
             confirmSignUpUseCase(s.email.trim(), s.verificationCode.trim())
                 .onSuccess { _effect.send(AuthEffect.NavigateToHome) }
                 .onFailure { _effect.send(AuthEffect.ShowError(it.message ?: "Verification failed. Please try again.")) }
+            _state.update { it.copy(isLoading = false) }
+        }
+    }
+
+    private fun handleGoogleSignIn() {
+        viewModelScope.launch {
+            _state.update { it.copy(isLoading = true) }
+            signInWithGoogleUseCase()
+                .onSuccess { _effect.send(AuthEffect.NavigateToHome) }
+                .onFailure { _effect.send(AuthEffect.ShowError(it.message ?: "Google sign-in failed. Please try again.")) }
             _state.update { it.copy(isLoading = false) }
         }
     }

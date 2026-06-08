@@ -11,7 +11,9 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -124,6 +126,20 @@ fun LoginScreen(
 
         TextButton(onClick = { onIntent(AuthIntent.ToggleMode) }) {
             Text(stringResource(Res.string.login_register_link))
+        }
+
+        Spacer(Modifier.height(16.dp))
+
+        HorizontalDivider()
+
+        Spacer(Modifier.height(16.dp))
+
+        OutlinedButton(
+            onClick = { onIntent(AuthIntent.SignInWithGoogle) },
+            modifier = Modifier.fillMaxWidth(),
+            enabled = !state.isLoading,
+        ) {
+            Text("Continue with Google")
         }
     }
 }

@@ -15,6 +15,7 @@ dependencies {
     coreLibraryDesugaring(libs.android.desugar.jdk.libs)
 
     implementation(projects.app)
+    implementation(projects.authentication)
 
     // Amplify (needed for initialization in Application class)
     implementation(libs.amplify.core)

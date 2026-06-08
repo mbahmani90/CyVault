@@ -78,4 +78,49 @@ import CyVaultApp
             }
         }
     }
+
+    public func signOut(completion: @escaping (String?) -> Void) {
+        Task {
+            _ = await Amplify.Auth.signOut()
+            completion(nil)
+        }
+    }
+
+    public func signInWithGoogle(
+        completion: @escaping (String?, String?, String?, String?) -> Void
+    ) {
+        Task {
+            do {
+                _ = try await Amplify.Auth.signInWithWebUI(for: .google, presentationAnchor: UIApplication.shared.windows.first!)
+                let attributes = try await Amplify.Auth.fetchUserAttributes()
+                let sub = attributes.first(where: { $0.key == .sub })?.value ?? ""
+                let name = attributes.first(where: { $0.key == .name })?.value ?? ""
+                let email = attributes.first(where: { $0.key == .email })?.value ?? ""
+                completion(sub, name, email, nil)
+            } catch {
+                completion(nil, nil, nil, error.localizedDescription)
+            }
+        }
+    }
+
+    public func getCurrentUser(
+        completion: @escaping (String?, String?, String?, String?) -> Void
+    ) {
+        Task {
+            do {
+                let session = try await Amplify.Auth.fetchAuthSession()
+                if !session.isSignedIn {
+                    completion(nil, nil, nil, nil)
+                    return
+                }
+                let attributes = try await Amplify.Auth.fetchUserAttributes()
+                let sub = attributes.first(where: { $0.key == .sub })?.value ?? ""
+                let name = attributes.first(where: { $0.key == .name })?.value ?? ""
+                let email = attributes.first(where: { $0.key == .email })?.value ?? ""
+                completion(sub, name, email, nil)
+            } catch {
+                completion(nil, nil, nil, error.localizedDescription)
+            }
+        }
+    }
 }

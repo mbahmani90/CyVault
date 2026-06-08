@@ -19,14 +19,7 @@ actual class AuthApiService actual constructor() {
                 if (error != null) {
                     continuation.resumeWithException(Exception(error))
                 } else {
-                    continuation.resume(
-                        User(
-                            id = userId ?: "",
-                            name = name ?: "",
-                            email = email,
-                            token = "",
-                        )
-                    )
+                    continuation.resume(User(id = userId ?: "", name = name ?: "", email = email, token = ""))
                 }
             }
         }
@@ -34,32 +27,50 @@ actual class AuthApiService actual constructor() {
     actual suspend fun register(name: String, email: String, password: String) =
         suspendCancellableCoroutine { continuation ->
             bridge.register(name, email, password) { error ->
-                if (error != null) {
-                    continuation.resumeWithException(Exception(error))
-                } else {
-                    continuation.resume(Unit)
-                }
+                if (error != null) continuation.resumeWithException(Exception(error))
+                else continuation.resume(Unit)
             }
         }
 
     actual suspend fun confirmSignUp(email: String, code: String) =
         suspendCancellableCoroutine { continuation ->
             bridge.confirmSignUp(email, code) { error ->
-                if (error != null) {
-                    continuation.resumeWithException(Exception(error))
-                } else {
-                    continuation.resume(Unit)
-                }
+                if (error != null) continuation.resumeWithException(Exception(error))
+                else continuation.resume(Unit)
             }
         }
 
     actual suspend fun forgotPassword(email: String) =
         suspendCancellableCoroutine { continuation ->
             bridge.forgotPassword(email) { error ->
+                if (error != null) continuation.resumeWithException(Exception(error))
+                else continuation.resume(Unit)
+            }
+        }
+
+    actual suspend fun signOut() =
+        suspendCancellableCoroutine { continuation ->
+            bridge.signOut { error ->
+                if (error != null) continuation.resumeWithException(Exception(error))
+                else continuation.resume(Unit)
+            }
+        }
+
+    actual suspend fun getCurrentUser(): User? =
+        suspendCancellableCoroutine { continuation ->
+            bridge.getCurrentUser { userId, name, email, error ->
+                if (error != null || userId == null) continuation.resume(null)
+                else continuation.resume(User(id = userId, name = name ?: "", email = email ?: "", token = ""))
+            }
+        }
+
+    actual suspend fun signInWithGoogle(): User =
+        suspendCancellableCoroutine { continuation ->
+            bridge.signInWithGoogle { userId, name, email, error ->
                 if (error != null) {
                     continuation.resumeWithException(Exception(error))
                 } else {
-                    continuation.resume(Unit)
+                    continuation.resume(User(id = userId ?: "", name = name ?: "", email = email ?: "", token = ""))
                 }
             }
         }

@@ -16,8 +16,21 @@
             android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Amplify OAuth redirect handler -->
+        <activity
+            android:name="com.amplifyframework.auth.cognito.activities.HostedUIRedirectActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="cyvault"
+                    android:host="callback" />
             </intent-filter>
         </activity>
     </application>

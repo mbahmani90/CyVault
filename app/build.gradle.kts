@@ -43,9 +43,12 @@ kotlin {
             implementation(libs.compose.runtime)
             implementation(libs.compose.material3)
             implementation(libs.compose.ui)
+            implementation(compose.materialIconsExtended)
 
             // Koin — used directly in AppModule.kt and MainViewController.kt
             implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
         }
 
         commonTest.dependencies {

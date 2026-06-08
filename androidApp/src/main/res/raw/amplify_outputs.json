@@ -23,6 +23,26 @@
       "require_symbols": true,
       "require_uppercase": true
     },
+    "oauth": {
+      "identity_providers": [
+        "GOOGLE"
+      ],
+      "redirect_sign_in_uri": [
+        "cyvault://callback"
+      ],
+      "redirect_sign_out_uri": [
+        "cyvault://signout"
+      ],
+      "response_type": "code",
+      "scopes": [
+        "phone",
+        "email",
+        "openid",
+        "profile",
+        "aws.cognito.signin.user.admin"
+      ],
+      "domain": "bda4635adcf2012dd872.auth.eu-north-1.amazoncognito.com"
+    },
     "unauthenticated_identities_enabled": true
   },
   "version": "1.4"

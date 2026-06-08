@@ -13,4 +13,5 @@ sealed class AuthIntent {
     object ShowForgotPassword : AuthIntent()
     object BackToLogin : AuthIntent()
     object SubmitForgotPassword : AuthIntent()
+    object SignInWithGoogle : AuthIntent()
 }
