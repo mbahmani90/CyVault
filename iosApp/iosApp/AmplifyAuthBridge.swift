@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 import Amplify
 import AWSCognitoAuthPlugin
 import CyVaultApp
@@ -91,7 +92,11 @@ import CyVaultApp
     ) {
         Task {
             do {
-                _ = try await Amplify.Auth.signInWithWebUI(for: .google, presentationAnchor: UIApplication.shared.windows.first!)
+                let window = UIApplication.shared.connectedScenes
+                    .compactMap { $0 as? UIWindowScene }
+                    .flatMap { $0.windows }
+                    .first { $0.isKeyWindow }!
+                _ = try await Amplify.Auth.signInWithWebUI(for: .google, presentationAnchor: window)
                 let attributes = try await Amplify.Auth.fetchUserAttributes()
                 let sub = attributes.first(where: { $0.key == .sub })?.value ?? ""
                 let name = attributes.first(where: { $0.key == .name })?.value ?? ""
