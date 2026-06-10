@@ -2,28 +2,43 @@ package com.cypressit.cyvault
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.cypressit.authentication.domain.usecase.SignOutUseCase
 import com.cypressit.authentication.presentation.ui.AuthScreen
+import com.cypressit.cyvault.navigation.Route
+import com.cypressit.vault.presentation.ui.VaultHomeScreen
+import org.koin.compose.koinInject
 
 @Composable
 fun App() {
     MaterialTheme {
-        var isAuthenticated by remember { mutableStateOf(false) }
-        var sessionKey by remember { mutableStateOf(0) }
+        val navController = rememberNavController()
+        val signOutUseCase: SignOutUseCase = koinInject()
 
-        if (isAuthenticated) {
-            VaultHomeScreen(onSignOut = {
-                isAuthenticated = false
-                sessionKey++
-            })
-        } else {
-            key(sessionKey) {
+        NavHost(
+            navController = navController,
+            startDestination = Route.Login,
+        ) {
+            composable<Route.Login> {
                 AuthScreen(
-                    onAuthSuccess = { isAuthenticated = true }
+                    onAuthSuccess = {
+                        navController.navigate(Route.Vault) {
+                            popUpTo(Route.Login) { inclusive = true }
+                        }
+                    }
+                )
+            }
+
+            composable<Route.Vault> {
+                VaultHomeScreen(
+                    onSignOut = {
+                        signOutUseCase()
+                        navController.navigate(Route.Login) {
+                            popUpTo(Route.Vault) { inclusive = true }
+                        }
+                    }
                 )
             }
         }

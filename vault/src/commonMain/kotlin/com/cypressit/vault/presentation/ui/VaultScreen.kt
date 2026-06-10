@@ -24,20 +24,20 @@ fun VaultScreen(
     viewModel: VaultViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackBarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                is VaultEffect.ShowError -> snackbarHostState.showSnackbar(effect.message)
-                VaultEffect.VaultCreated -> snackbarHostState.showSnackbar("Vault created")
-                VaultEffect.VaultDeleted -> snackbarHostState.showSnackbar("Vault deleted")
+                is VaultEffect.ShowError -> snackBarHostState.showSnackbar(effect.message)
+                VaultEffect.VaultCreated -> snackBarHostState.showSnackbar("Vault created")
+                VaultEffect.VaultDeleted -> snackBarHostState.showSnackbar("Vault deleted")
             }
         }
     }
 
     Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = { SnackbarHost(snackBarHostState) },
         containerColor = MaterialTheme.colorScheme.background,
     ) { _ ->
         when {

@@ -50,6 +50,8 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
 
+            implementation(compose.materialIconsExtended)
+
             // Koin
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
