@@ -22,18 +22,35 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.cypressit.vault.presentation.viewmodel.VaultHomeEffect
+import com.cypressit.vault.presentation.viewmodel.VaultHomeIntent
+import com.cypressit.vault.presentation.viewmodel.VaultHomeViewModel
 import kotlinx.coroutines.launch
+import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun VaultHomeScreen(onSignOut: suspend () -> Unit) {
+fun VaultHomeScreen(
+    onNavigateToLogin: () -> Unit,
+    viewModel: VaultHomeViewModel = koinViewModel(),
+) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(Unit) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                VaultHomeEffect.NavigateToLogin -> onNavigateToLogin()
+                is VaultHomeEffect.ShowError -> snackbarHostState.showSnackbar(effect.message)
+            }
+        }
+    }
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -58,16 +75,8 @@ fun VaultHomeScreen(onSignOut: suspend () -> Unit) {
                     label = { Text("Sign Out") },
                     selected = false,
                     onClick = {
-                        scope.launch {
-                            drawerState.close()
-                            try {
-                                onSignOut()
-                            } catch (e: Exception) {
-                                snackbarHostState.showSnackbar(
-                                    "Sign out failed: ${e.message ?: "Unknown error"}"
-                                )
-                            }
-                        }
+                        scope.launch { drawerState.close() }
+                        viewModel.onIntent(VaultHomeIntent.SignOut)
                     },
                     modifier = Modifier.padding(horizontal = 12.dp),
                 )

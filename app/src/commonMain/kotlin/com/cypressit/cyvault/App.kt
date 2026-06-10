@@ -5,17 +5,14 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.cypressit.authentication.domain.usecase.SignOutUseCase
 import com.cypressit.authentication.presentation.ui.AuthScreen
 import com.cypressit.cyvault.navigation.Route
 import com.cypressit.vault.presentation.ui.VaultHomeScreen
-import org.koin.compose.koinInject
 
 @Composable
 fun App() {
     MaterialTheme {
         val navController = rememberNavController()
-        val signOutUseCase: SignOutUseCase = koinInject()
 
         NavHost(
             navController = navController,
@@ -33,8 +30,7 @@ fun App() {
 
             composable<Route.Vault> {
                 VaultHomeScreen(
-                    onSignOut = {
-                        signOutUseCase()
+                    onNavigateToLogin = {
                         navController.navigate(Route.Login) {
                             popUpTo(Route.Vault) { inclusive = true }
                         }

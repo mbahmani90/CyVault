@@ -11,6 +11,8 @@ import com.cypressit.authentication.domain.usecase.RegisterUseCase
 import com.cypressit.authentication.domain.usecase.SignInWithGoogleUseCase
 import com.cypressit.authentication.domain.usecase.SignOutUseCase
 import com.cypressit.authentication.presentation.viewmodel.AuthViewModel
+import com.cypressit.authentication.session.SessionManagerImpl
+import com.cypressit.cyvault.session.SessionManager
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
@@ -20,6 +22,9 @@ val authModule = module {
 
     // Repository
     single<AuthRepository> { AuthRepositoryImpl(get()) }
+
+    // Session
+    single<SessionManager> { SessionManagerImpl(get()) }
 
     // Use cases
     factory { LoginUseCase(get()) }

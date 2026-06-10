@@ -6,6 +6,7 @@ import com.cypressit.vault.domain.repository.VaultRepository
 import com.cypressit.vault.domain.usecase.CreateVaultUseCase
 import com.cypressit.vault.domain.usecase.DeleteVaultUseCase
 import com.cypressit.vault.domain.usecase.GetVaultsUseCase
+import com.cypressit.vault.presentation.viewmodel.VaultHomeViewModel
 import com.cypressit.vault.presentation.viewmodel.VaultViewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
@@ -22,6 +23,7 @@ val vaultModule = module {
     factory { CreateVaultUseCase(get()) }
     factory { DeleteVaultUseCase(get()) }
 
-    // ViewModel
+    // ViewModels
     viewModelOf(::VaultViewModel)
+    viewModelOf(::VaultHomeViewModel)
 }
