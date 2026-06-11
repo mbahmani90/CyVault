@@ -1,5 +1,6 @@
 package com.cypressit.authentication.data.remote
 
+import com.amplifyframework.auth.AuthProvider
 import com.amplifyframework.auth.AuthUserAttributeKey
 import com.amplifyframework.auth.options.AuthSignUpOptions
 import com.amplifyframework.kotlin.core.Amplify
@@ -48,7 +49,7 @@ actual class AuthApiService actual constructor() {
     actual suspend fun signInWithGoogle(): User {
         val activity = ActivityProvider.activity
             ?: throw Exception("No activity available for Google Sign-In")
-        Amplify.Auth.signInWithSocialWebUI(com.amplifyframework.auth.AuthProvider.google(), activity)
+        Amplify.Auth.signInWithSocialWebUI(AuthProvider.google(), activity)
         return fetchCurrentUserAttributes(null)
     }
 
