@@ -1,13 +1,17 @@
 package com.cypressit.vault.presentation.viewmodel
 
+import com.cypressit.vault.domain.model.CardType
+
 sealed class VaultIntent {
-    object LoadVaults : VaultIntent()
-    data class CreateVault(
-        val title: String,
-        val username: String,
-        val password: String,
-        val url: String?,
-        val notes: String?,
+    data object LoadCards : VaultIntent()
+    data class CreateCard(
+        val bankName: String,
+        val cardHolderName: String,
+        val cardNumber: String,
+        val cvv2: String,
+        val expiryDate: String,
+        val balance: Double,
+        val cardType: CardType,
     ) : VaultIntent()
-    data class DeleteVault(val id: String) : VaultIntent()
+    data class DeleteCard(val id: String) : VaultIntent()
 }

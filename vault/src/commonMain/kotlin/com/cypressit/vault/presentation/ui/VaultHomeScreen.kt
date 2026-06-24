@@ -41,13 +41,13 @@ fun VaultHomeScreen(
 ) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackBarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
             when (effect) {
                 VaultHomeEffect.NavigateToLogin -> onNavigateToLogin()
-                is VaultHomeEffect.ShowError -> snackbarHostState.showSnackbar(effect.message)
+                is VaultHomeEffect.ShowError -> snackBarHostState.showSnackbar(effect.message)
             }
         }
     }
@@ -84,7 +84,7 @@ fun VaultHomeScreen(
         }
     ) {
         Scaffold(
-            snackbarHost = { SnackbarHost(snackbarHostState) },
+            snackbarHost = { SnackbarHost(snackBarHostState) },
             topBar = {
                 TopAppBar(
                     title = { Text("CyVault") },

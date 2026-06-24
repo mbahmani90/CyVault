@@ -17,10 +17,10 @@ fun VaultContent(
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(modifier = modifier) {
-        items(state.items) { item ->
+        items(state.cards) { card ->
             ListItem(
-                headlineContent = { Text(item.title) },
-                supportingContent = { Text(item.username) },
+                headlineContent = { Text(card.bankName) },
+                supportingContent = { Text(card.cardHolderName) },
                 modifier = Modifier.fillMaxWidth(),
             )
         }

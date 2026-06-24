@@ -30,8 +30,8 @@ fun VaultScreen(
         viewModel.effect.collect { effect ->
             when (effect) {
                 is VaultEffect.ShowError -> snackBarHostState.showSnackbar(effect.message)
-                VaultEffect.VaultCreated -> snackBarHostState.showSnackbar("Vault created")
-                VaultEffect.VaultDeleted -> snackBarHostState.showSnackbar("Vault deleted")
+                VaultEffect.CardCreated -> snackBarHostState.showSnackbar("Vault created")
+                VaultEffect.CardDeleted -> snackBarHostState.showSnackbar("Vault deleted")
             }
         }
     }

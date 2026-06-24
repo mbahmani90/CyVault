@@ -2,9 +2,9 @@ package com.cypressit.vault.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cypressit.vault.domain.usecase.CreateVaultUseCase
-import com.cypressit.vault.domain.usecase.DeleteVaultUseCase
-import com.cypressit.vault.domain.usecase.GetVaultsUseCase
+import com.cypressit.vault.domain.usecase.CreateCardUseCase
+import com.cypressit.vault.domain.usecase.DeleteCardUseCase
+import com.cypressit.vault.domain.usecase.GetCardsUseCase
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,9 +14,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class VaultViewModel(
-    private val getVaults: GetVaultsUseCase,
-    private val createVault: CreateVaultUseCase,
-    private val deleteVault: DeleteVaultUseCase,
+    private val getCards: GetCardsUseCase,
+    private val createCard: CreateCardUseCase,
+    private val deleteCard: DeleteCardUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(VaultState())
@@ -26,36 +26,29 @@ class VaultViewModel(
     val effect = _effect.receiveAsFlow()
 
     init {
-        onIntent(VaultIntent.LoadVaults)
+        onIntent(VaultIntent.LoadCards)
     }
 
     fun onIntent(intent: VaultIntent) {
         when (intent) {
-            VaultIntent.LoadVaults -> loadVaults()
-            is VaultIntent.CreateVault -> createNewVault(intent)
-            is VaultIntent.DeleteVault -> deleteExistingVault(intent.id)
+            VaultIntent.LoadCards -> loadCards()
+            is VaultIntent.CreateCard -> createNewCard(intent)
+            is VaultIntent.DeleteCard -> deleteExistingCard(intent.id)
         }
     }
 
-    private fun loadVaults() {
+    private fun loadCards() {
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true, error = null) }
-            getVaults()
-                .onSuccess { items -> _state.update { it.copy(isLoading = false, items = items) } }
-                .onFailure { err ->
-                    _state.update { it.copy(isLoading = false) }
-                    _effect.send(VaultEffect.ShowError(err.message ?: "Something went wrong"))
-                }
-        }
-    }
-
-    private fun createNewVault(intent: VaultIntent.CreateVault) {
-        viewModelScope.launch {
-            _state.update { it.copy(isLoading = true) }
-            createVault(intent.title, intent.username, intent.password, intent.url, intent.notes)
-                .onSuccess {
-                    _effect.send(VaultEffect.VaultCreated)
-                    loadVaults()
+            getCards()
+                .onSuccess { cards ->
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            cards = cards,
+                            totalBalance = cards.sumOf { card -> card.balance },
+                        )
+                    }
                 }
                 .onFailure { err ->
                     _state.update { it.copy(isLoading = false) }
@@ -64,13 +57,36 @@ class VaultViewModel(
         }
     }
 
-    private fun deleteExistingVault(id: String) {
+    private fun createNewCard(intent: VaultIntent.CreateCard) {
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true) }
-            deleteVault(id)
+            createCard(
+                bankName = intent.bankName,
+                cardHolderName = intent.cardHolderName,
+                cardNumber = intent.cardNumber,
+                cvv2 = intent.cvv2,
+                expiryDate = intent.expiryDate,
+                balance = intent.balance,
+                cardType = intent.cardType,
+            )
                 .onSuccess {
-                    _effect.send(VaultEffect.VaultDeleted)
-                    loadVaults()
+                    _effect.send(VaultEffect.CardCreated)
+                    loadCards()
+                }
+                .onFailure { err ->
+                    _state.update { it.copy(isLoading = false) }
+                    _effect.send(VaultEffect.ShowError(err.message ?: "Something went wrong"))
+                }
+        }
+    }
+
+    private fun deleteExistingCard(id: String) {
+        viewModelScope.launch {
+            _state.update { it.copy(isLoading = true) }
+            deleteCard(id)
+                .onSuccess {
+                    _effect.send(VaultEffect.CardDeleted)
+                    loadCards()
                 }
                 .onFailure { err ->
                     _state.update { it.copy(isLoading = false) }
