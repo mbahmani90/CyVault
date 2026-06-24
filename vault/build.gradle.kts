@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.kotlinx.serialization)
 }
 
+
 kotlin {
     listOf(
         iosArm64(),
@@ -51,6 +52,10 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtimeCompose)
 
             implementation(compose.materialIconsExtended)
+
+            // Navigation
+            implementation(libs.androidx.navigation.compose)
+            implementation(libs.kotlinx.serialization.json)
 
             // Koin
             implementation(libs.koin.core)

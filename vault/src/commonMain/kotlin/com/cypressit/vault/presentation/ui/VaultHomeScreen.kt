@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DrawerValue
@@ -23,13 +24,21 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.cypressit.vault.addCard.presentation.ui.AddCardScreen
+import com.cypressit.vault.navigation.VaultRoute
 import com.cypressit.vault.presentation.viewmodel.VaultHomeEffect
 import com.cypressit.vault.presentation.viewmodel.VaultHomeIntent
 import com.cypressit.vault.presentation.viewmodel.VaultHomeViewModel
+import com.cypressit.vault.vaultList.presentation.ui.VaultListScreen
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -42,6 +51,10 @@ fun VaultHomeScreen(
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val snackBarHostState = remember { SnackbarHostState() }
+    val navController = rememberNavController()
+    val currentBackStack by navController.currentBackStackEntryAsState()
+    val isOnList = currentBackStack?.destination?.route
+        ?.contains(VaultRoute.List::class.simpleName ?: "") != false
 
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
@@ -54,6 +67,7 @@ fun VaultHomeScreen(
 
     ModalNavigationDrawer(
         drawerState = drawerState,
+        gesturesEnabled = isOnList,
         drawerContent = {
             ModalDrawerSheet {
                 Spacer(Modifier.height(24.dp))
@@ -89,17 +103,35 @@ fun VaultHomeScreen(
                 TopAppBar(
                     title = { Text("CyVault") },
                     navigationIcon = {
-                        IconButton(onClick = { scope.launch { drawerState.open() } }) {
+                        IconButton(onClick = {
+                            if (isOnList) scope.launch { drawerState.open() }
+                            else navController.popBackStack()
+                        }) {
                             Icon(
-                                imageVector = Icons.Default.Menu,
-                                contentDescription = "Open Menu",
+                                imageVector = if (isOnList) Icons.Default.Menu
+                                    else Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = if (isOnList) "Open Menu" else "Back",
                             )
                         }
                     }
                 )
             }
         ) { paddingValues ->
-            VaultScreen(modifier = Modifier.padding(paddingValues))
+            NavHost(
+                navController = navController,
+                startDestination = VaultRoute.List,
+                modifier = Modifier.padding(paddingValues),
+            ) {
+                composable<VaultRoute.List> {
+                    VaultListScreen(onAddCard = { navController.navigate(VaultRoute.AddCard) })
+                }
+                composable<VaultRoute.AddCard> {
+                    AddCardScreen(
+                        onBack = { navController.popBackStack() },
+                        onCardSaved = { navController.popBackStack() },
+                    )
+                }
+            }
         }
     }
 }
