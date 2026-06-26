@@ -7,42 +7,42 @@
   </defs>
 
   <!-- Shield -->
-  <path d="M512 130 L755 238 L755 500 Q755 668 512 840 Q269 668 269 500 L269 238 Z" fill="url(#shieldGrad)"/>
-  <path d="M512 130 L755 238 L755 500 Q755 668 512 840 Q269 668 269 500 L269 238 Z"
+  <path d="M512 218 L769 332 L769 554 Q769 703 512 829 Q255 703 255 554 L255 332 Z" fill="url(#shieldGrad)"/>
+  <path d="M512 218 L769 332 L769 554 Q769 703 512 829 Q255 703 255 554 L255 332 Z"
         fill="none" stroke="#00D4FF" stroke-width="5" opacity="0.5"/>
 
-  <!-- Vault dial outer ring (r=200) and inner ring (r=165) -->
-  <circle cx="512" cy="450" r="200" fill="none" stroke="#00D4FF" stroke-width="20" opacity="0.5"/>
-  <circle cx="512" cy="450" r="165" fill="none" stroke="#00D4FF" stroke-width="9" opacity="0.5"/>
+  <!-- Vault dial outer ring cx=512 cy=500 r=200 -->
+  <circle cx="512" cy="500" r="200" fill="none" stroke="#00D4FF" stroke-width="20" opacity="0.5"/>
+  <circle cx="512" cy="500" r="165" fill="none" stroke="#00D4FF" stroke-width="9" opacity="0.5"/>
 
-  <!-- 12 bolt dots exactly on r=200 circle, every 30° starting from top -->
+  <!-- 12 bolt dots on r=200 circle at (512,500) -->
   <g fill="#00D4FF" opacity="0.5">
-    <circle cx="512"   cy="250"   r="11"/>
-    <circle cx="612"   cy="277"   r="11"/>
-    <circle cx="685"   cy="350"   r="11"/>
-    <circle cx="712"   cy="450"   r="11"/>
-    <circle cx="685"   cy="550"   r="11"/>
-    <circle cx="612"   cy="623"   r="11"/>
-    <circle cx="512"   cy="650"   r="11"/>
-    <circle cx="412"   cy="623"   r="11"/>
-    <circle cx="339"   cy="550"   r="11"/>
-    <circle cx="312"   cy="450"   r="11"/>
-    <circle cx="339"   cy="350"   r="11"/>
-    <circle cx="412"   cy="277"   r="11"/>
+    <circle cx="512" cy="300" r="11"/>
+    <circle cx="612" cy="327" r="11"/>
+    <circle cx="685" cy="400" r="11"/>
+    <circle cx="712" cy="500" r="11"/>
+    <circle cx="685" cy="600" r="11"/>
+    <circle cx="612" cy="673" r="11"/>
+    <circle cx="512" cy="700" r="11"/>
+    <circle cx="412" cy="673" r="11"/>
+    <circle cx="339" cy="600" r="11"/>
+    <circle cx="312" cy="500" r="11"/>
+    <circle cx="339" cy="400" r="11"/>
+    <circle cx="412" cy="327" r="11"/>
   </g>
 
-  <!-- Dial spokes -->
+  <!-- Dial spokes centered at (512,500) -->
   <g stroke="#00D4FF" stroke-width="16" stroke-linecap="round" opacity="0.5">
-    <line x1="512" y1="320" x2="512" y2="380"/>
-    <line x1="512" y1="520" x2="512" y2="580"/>
-    <line x1="395" y1="383" x2="443" y2="410"/>
-    <line x1="581" y1="490" x2="629" y2="517"/>
-    <line x1="395" y1="517" x2="443" y2="490"/>
-    <line x1="581" y1="410" x2="629" y2="383"/>
+    <line x1="512" y1="370" x2="512" y2="430"/>
+    <line x1="512" y1="570" x2="512" y2="630"/>
+    <line x1="395" y1="433" x2="443" y2="460"/>
+    <line x1="581" y1="540" x2="629" y2="567"/>
+    <line x1="395" y1="567" x2="443" y2="540"/>
+    <line x1="581" y1="460" x2="629" y2="433"/>
   </g>
 
   <!-- Center hub -->
-  <circle cx="512" cy="450" r="52" fill="#00D4FF" opacity="0.5"/>
-  <circle cx="512" cy="450" r="22" fill="#0D2340"/>
-  <circle cx="512" cy="450" r="8" fill="#00D4FF" opacity="0.5"/>
+  <circle cx="512" cy="500" r="52" fill="#00D4FF" opacity="0.5"/>
+  <circle cx="512" cy="500" r="22" fill="#0D2340"/>
+  <circle cx="512" cy="500" r="8" fill="#00D4FF" opacity="0.5"/>
 </svg>

@@ -5,17 +5,17 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- Shield fill -->
+    <!-- Shield fill (wider, shorter) -->
     <path
         android:fillColor="#1A3A5C"
-        android:pathData="M54,22 L76,32 L76,56 Q76,71 54,86 Q32,71 32,56 L32,32 Z"/>
+        android:pathData="M54,23 L81,35 L81,58 Q81,74 54,87 Q27,74 27,58 L27,35 Z"/>
 
     <!-- Shield border -->
     <path
         android:fillColor="#00000000"
         android:strokeColor="#8000D4FF"
         android:strokeWidth="0.7"
-        android:pathData="M54,22 L76,32 L76,56 Q76,71 54,86 Q32,71 32,56 L32,32 Z"/>
+        android:pathData="M54,23 L81,35 L81,58 Q81,74 54,87 Q27,74 27,58 L27,35 Z"/>
 
     <!-- Vault outer ring cx=54 cy=54 r=18 (two semicircles) -->
     <path
@@ -53,8 +53,8 @@
     <path android:fillColor="#00000000" android:strokeColor="#8000D4FF" android:strokeWidth="1.7" android:strokeLineCap="round" android:pathData="M47.94,57.5 L42.74,60.5"/>
     <path android:fillColor="#00000000" android:strokeColor="#8000D4FF" android:strokeWidth="1.7" android:strokeLineCap="round" android:pathData="M47.94,50.5 L42.74,47.5"/>
 
-    <!-- Center hub (two semicircles) -->
-    <path android:fillColor="#8000D4FF" android:pathData="M48.5,54 A5.5,5.5 0 1,0 59.5,54 A5.5,5.5 0 1,0 48.5,54"/>
-    <path android:fillColor="#FF0D2340" android:pathData="M51.7,54 A2.3,2.3 0 1,0 56.3,54 A2.3,2.3 0 1,0 51.7,54"/>
-    <path android:fillColor="#8000D4FF" android:pathData="M53.15,54 A0.85,0.85 0 1,0 54.85,54 A0.85,0.85 0 1,0 53.15,54"/>
+    <!-- Center hub (smaller) -->
+    <path android:fillColor="#8000D4FF" android:pathData="M50.5,54 A3.5,3.5 0 1,0 57.5,54 A3.5,3.5 0 1,0 50.5,54"/>
+    <path android:fillColor="#FF0D2340" android:pathData="M52.5,54 A1.5,1.5 0 1,0 55.5,54 A1.5,1.5 0 1,0 52.5,54"/>
+    <path android:fillColor="#8000D4FF" android:pathData="M53.4,54 A0.6,0.6 0 1,0 54.6,54 A0.6,0.6 0 1,0 53.4,54"/>
 </vector>
