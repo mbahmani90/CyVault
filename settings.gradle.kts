@@ -31,5 +31,6 @@ dependencyResolutionManagement {
 include(":androidApp")
 include(":app")
 include(":core")
+include(":design")
 include(":authentication")
 include(":vault")

@@ -8,22 +8,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -34,6 +26,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.cypressit.design.components.CyButton
+import com.cypressit.design.components.CyOutlinedTextField
+import com.cypressit.design.components.CyTopAppBar
 import com.cypressit.vault.common.domain.model.CardType
 import com.cypressit.vault.addCard.presentation.viewmodel.AddCardEffect
 import com.cypressit.vault.addCard.presentation.viewmodel.AddCardIntent
@@ -43,7 +38,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddCardScreen(
-    onBack: () -> Unit,
+    onNavigateBack: () -> Unit,
     onCardSaved: () -> Unit,
     viewModel: AddCardViewModel = koinViewModel(),
 ) {
@@ -71,57 +66,52 @@ fun AddCardScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            OutlinedTextField(
-                value = state.bankName,
-                onValueChange = { viewModel.onIntent(AddCardIntent.BankNameChanged(it)) },
-                label = { Text("Bank Name") },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
-            )
 
-            OutlinedTextField(
-                value = state.cardHolderName,
-                onValueChange = { viewModel.onIntent(AddCardIntent.CardHolderNameChanged(it)) },
-                label = { Text("Card Holder Name") },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
-            )
-
-            OutlinedTextField(
+            CyOutlinedTextField(
                 value = state.cardNumber,
                 onValueChange = { viewModel.onIntent(AddCardIntent.CardNumberChanged(it)) },
-                label = { Text("Card Number") },
+                label = "Card Number",
                 modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             )
 
-            OutlinedTextField(
+            CyOutlinedTextField(
                 value = state.cvv2,
                 onValueChange = { viewModel.onIntent(AddCardIntent.Cvv2Changed(it)) },
-                label = { Text("CVV2") },
+                label = "CVV2",
                 modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             )
 
-            OutlinedTextField(
+            CyOutlinedTextField(
+                value = state.cardHolderName,
+                onValueChange = { viewModel.onIntent(AddCardIntent.CardHolderNameChanged(it)) },
+                label = "Card Holder Name",
+                modifier = Modifier.fillMaxWidth(),
+            )
+
+            CyOutlinedTextField(
+                value = state.bankName,
+                onValueChange = { viewModel.onIntent(AddCardIntent.BankNameChanged(it)) },
+                label = "Bank Name",
+                modifier = Modifier.fillMaxWidth(),
+            )
+
+            CyOutlinedTextField(
                 value = state.expiryDate,
                 onValueChange = { viewModel.onIntent(AddCardIntent.ExpiryDateChanged(it)) },
-                label = { Text("Expiry Date (MM/YY)") },
-                placeholder = { Text("MM/YY") },
+                label = "Expiry Date (MM/YY)",
+                placeholder = "MM/YY",
                 modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             )
 
-            OutlinedTextField(
+            CyOutlinedTextField(
                 value = state.balance,
                 onValueChange = { viewModel.onIntent(AddCardIntent.BalanceChanged(it)) },
-                label = { Text("Balance") },
+                label = "Balance",
                 prefix = { Text("€ ") },
                 modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
             )
 
@@ -129,11 +119,11 @@ fun AddCardScreen(
                 expanded = cardTypeExpanded,
                 onExpandedChange = { cardTypeExpanded = it },
             ) {
-                OutlinedTextField(
+                CyOutlinedTextField(
                     value = state.cardType.name,
                     onValueChange = {},
+                    label = "Card Type",
                     readOnly = true,
-                    label = { Text("Card Type") },
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = cardTypeExpanded) },
                     modifier = Modifier
                         .menuAnchor()
@@ -155,19 +145,12 @@ fun AddCardScreen(
                 }
             }
 
-            Button(
+            CyButton(
+                text = "Save Card",
                 onClick = { viewModel.onIntent(AddCardIntent.Submit) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp),
-                enabled = !state.isLoading,
-            ) {
-                if (state.isLoading) {
-                    CircularProgressIndicator()
-                } else {
-                    Text("Save Card")
-                }
-            }
+                isLoading = state.isLoading,
+                modifier = Modifier.padding(vertical = 8.dp),
+            )
         }
     }
 }

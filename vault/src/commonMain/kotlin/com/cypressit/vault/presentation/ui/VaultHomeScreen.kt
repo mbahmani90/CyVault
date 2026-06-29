@@ -126,7 +126,7 @@ fun VaultHomeScreen(
                 }
                 composable<VaultRoute.AddCard> {
                     AddCardScreen(
-                        onBack = { viewModel.onIntent(VaultHomeIntent.NavigateBack) },
+                        onNavigateBack = { viewModel.onIntent(VaultHomeIntent.NavigateBack) },
                         onCardSaved = { viewModel.onIntent(VaultHomeIntent.NavigateBack) },
                     )
                 }
