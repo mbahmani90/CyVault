@@ -23,10 +23,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
@@ -35,11 +33,16 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.cypressit.vault.addCard.presentation.ui.AddCardScreen
 import com.cypressit.vault.navigation.VaultRoute
-import com.cypressit.vault.presentation.viewmodel.VaultHomeEffect
 import com.cypressit.vault.presentation.viewmodel.VaultHomeIntent
 import com.cypressit.vault.presentation.viewmodel.VaultHomeViewModel
 import com.cypressit.vault.vaultList.presentation.ui.VaultListScreen
-import kotlinx.coroutines.launch
+import cyvault.vault.generated.resources.Res
+import cyvault.vault.generated.resources.vault_home_back_description
+import cyvault.vault.generated.resources.vault_home_open_menu_description
+import cyvault.vault.generated.resources.vault_home_sign_out
+import cyvault.vault.generated.resources.vault_home_sign_out_description
+import cyvault.vault.generated.resources.vault_home_title
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,30 +52,28 @@ fun VaultHomeScreen(
     viewModel: VaultHomeViewModel = koinViewModel(),
 ) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val scope = rememberCoroutineScope()
     val snackBarHostState = remember { SnackbarHostState() }
     val navController = rememberNavController()
     val currentBackStack by navController.currentBackStackEntryAsState()
-    val isOnList = currentBackStack?.destination?.route
+    val isOnVaultScreen = currentBackStack?.destination?.route
         ?.contains(VaultRoute.List::class.simpleName ?: "") != false
 
-    LaunchedEffect(Unit) {
-        viewModel.effect.collect { effect ->
-            when (effect) {
-                VaultHomeEffect.NavigateToLogin -> onNavigateToLogin()
-                is VaultHomeEffect.ShowError -> snackBarHostState.showSnackbar(effect.message)
-            }
-        }
-    }
+    VaultHomeScreenEffect(
+        effects = viewModel.effect,
+        drawerState = drawerState,
+        navController = navController,
+        snackBarHostState = snackBarHostState,
+        onNavigateToLogin = onNavigateToLogin,
+    )
 
     ModalNavigationDrawer(
         drawerState = drawerState,
-        gesturesEnabled = isOnList,
+        gesturesEnabled = isOnVaultScreen,
         drawerContent = {
             ModalDrawerSheet {
                 Spacer(Modifier.height(24.dp))
                 Text(
-                    text = "CyVault",
+                    text = stringResource(Res.string.vault_home_title),
                     style = MaterialTheme.typography.headlineSmall,
                     modifier = Modifier.padding(horizontal = 24.dp),
                 )
@@ -83,15 +84,12 @@ fun VaultHomeScreen(
                     icon = {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ExitToApp,
-                            contentDescription = "Sign Out",
+                            contentDescription = stringResource(Res.string.vault_home_sign_out_description),
                         )
                     },
-                    label = { Text("Sign Out") },
+                    label = { Text(stringResource(Res.string.vault_home_sign_out)) },
                     selected = false,
-                    onClick = {
-                        scope.launch { drawerState.close() }
-                        viewModel.onIntent(VaultHomeIntent.SignOut)
-                    },
+                    onClick = { viewModel.onIntent(VaultHomeIntent.SignOut) },
                     modifier = Modifier.padding(horizontal = 12.dp),
                 )
             }
@@ -101,16 +99,17 @@ fun VaultHomeScreen(
             snackbarHost = { SnackbarHost(snackBarHostState) },
             topBar = {
                 TopAppBar(
-                    title = { Text("CyVault") },
+                    title = { Text(stringResource(Res.string.vault_home_title)) },
                     navigationIcon = {
                         IconButton(onClick = {
-                            if (isOnList) scope.launch { drawerState.open() }
-                            else navController.popBackStack()
+                            if (isOnVaultScreen) viewModel.onIntent(VaultHomeIntent.OpenDrawer)
+                            else viewModel.onIntent(VaultHomeIntent.NavigateBack)
                         }) {
                             Icon(
-                                imageVector = if (isOnList) Icons.Default.Menu
+                                imageVector = if (isOnVaultScreen) Icons.Default.Menu
                                     else Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = if (isOnList) "Open Menu" else "Back",
+                                contentDescription = if (isOnVaultScreen) stringResource(Res.string.vault_home_open_menu_description)
+                                    else stringResource(Res.string.vault_home_back_description),
                             )
                         }
                     }
@@ -123,12 +122,12 @@ fun VaultHomeScreen(
                 modifier = Modifier.padding(paddingValues),
             ) {
                 composable<VaultRoute.List> {
-                    VaultListScreen(onAddCard = { navController.navigate(VaultRoute.AddCard) })
+                    VaultListScreen(onAddCard = { viewModel.onIntent(VaultHomeIntent.NavigateToAddCard) })
                 }
                 composable<VaultRoute.AddCard> {
                     AddCardScreen(
-                        onBack = { navController.popBackStack() },
-                        onCardSaved = { navController.popBackStack() },
+                        onBack = { viewModel.onIntent(VaultHomeIntent.NavigateBack) },
+                        onCardSaved = { viewModel.onIntent(VaultHomeIntent.NavigateBack) },
                     )
                 }
             }

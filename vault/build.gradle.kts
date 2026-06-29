@@ -52,6 +52,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtimeCompose)
 
             implementation(compose.materialIconsExtended)
+            implementation(libs.compose.components.resources)
 
             // Navigation
             implementation(libs.androidx.navigation.compose)
@@ -83,4 +84,10 @@ kotlin {
             implementation(libs.kotlin.test)
         }
     }
+}
+
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "cyvault.vault.generated.resources"
+    generateResClass = always
 }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Vault Home Screen -->
+    <string name="vault_home_title">CyVault</string>
+    <string name="vault_home_sign_out">Sign Out</string>
+    <string name="vault_home_sign_out_description">Sign Out</string>
+    <string name="vault_home_open_menu_description">Open Menu</string>
+    <string name="vault_home_back_description">Back</string>
+</resources>

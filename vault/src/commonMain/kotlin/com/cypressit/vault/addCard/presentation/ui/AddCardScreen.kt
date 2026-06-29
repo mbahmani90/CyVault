@@ -61,20 +61,7 @@ fun AddCardScreen(
     }
 
     Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) },
-        topBar = {
-            TopAppBar(
-                title = { Text("Add Card") },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
-                        )
-                    }
-                }
-            )
-        }
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { paddingValues ->
         Column(
             modifier = Modifier

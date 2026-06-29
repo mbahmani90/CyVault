@@ -17,11 +17,15 @@ class VaultHomeViewModel(
     fun onIntent(intent: VaultHomeIntent) {
         when (intent) {
             VaultHomeIntent.SignOut -> signOut()
+            VaultHomeIntent.OpenDrawer -> viewModelScope.launch { _effect.send(VaultHomeEffect.OpenDrawer) }
+            VaultHomeIntent.NavigateToAddCard -> viewModelScope.launch { _effect.send(VaultHomeEffect.NavigateToAddCard) }
+            VaultHomeIntent.NavigateBack -> viewModelScope.launch { _effect.send(VaultHomeEffect.NavigateBack) }
         }
     }
 
     private fun signOut() {
         viewModelScope.launch {
+            _effect.send(VaultHomeEffect.CloseDrawer)
             sessionManager.signOut()
                 .onSuccess {
                     _effect.send(VaultHomeEffect.NavigateToLogin)
