@@ -1,0 +1,9 @@
+package com.cypressit.vault.addCard.domain.model
+
+data class Institution(
+    val id: String,
+    val name: String,
+    val bic: String?,
+    val logo: String?,
+    val countries: List<String>,
+)
