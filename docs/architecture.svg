@@ -1,0 +1,295 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1025" width="1400" height="1025" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <title>CyVault — Proposed Modular Architecture</title>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#475569"/>
+    </marker>
+    <marker id="arrowOrange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#D97706"/>
+    </marker>
+    <marker id="arrowRed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#DC2626"/>
+    </marker>
+    <style>
+      .t-title { font-size: 22px; font-weight: 700; fill: #0F172A; }
+      .t-sub { font-size: 12.5px; fill: #64748B; }
+      .t-panel { font-size: 15px; font-weight: 700; fill: #0F172A; }
+      .t-band { font-size: 11px; font-weight: 700; letter-spacing: 0.8px; fill: #475569; }
+      .t-box { font-size: 13px; font-weight: 700; fill: #0F172A; text-anchor: middle; }
+      .t-boxsub { font-size: 10px; fill: #475569; text-anchor: middle; }
+      .t-small { font-size: 11px; fill: #475569; }
+      .t-rule { font-size: 12.5px; fill: #1E293B; }
+      .box { fill: #FFFFFF; stroke-width: 1.5; }
+      .dep { stroke: #475569; stroke-width: 1.6; fill: none; marker-end: url(#arrow); }
+      .dep2 { stroke: #475569; stroke-width: 1.6; fill: none; marker-end: url(#arrow); marker-start: url(#arrow); }
+      .back { stroke: #D97706; stroke-width: 1.6; fill: none; marker-end: url(#arrowOrange); }
+      .panel { fill: #FFFFFF; stroke: #CBD5E1; stroke-width: 1.2; }
+    </style>
+  </defs>
+
+  <rect width="1400" height="1025" fill="#F8FAFC"/>
+
+  <!-- Title -->
+  <text x="40" y="34" class="t-title">CyVault — Proposed Modular Architecture</text>
+  <text x="40" y="56" class="t-sub">Kotlin Multiplatform password manager · Android + iOS · Compose Multiplatform · Koin · Ktor · SQLDelight</text>
+
+  <!-- ===================== LEFT: MODULE GRAPH ===================== -->
+
+  <!-- Band: app shells -->
+  <rect x="40" y="85" width="810" height="70" rx="10" fill="#EEF2F7" stroke="#94A3B8"/>
+  <text x="52" y="102" class="t-band">PLATFORM SHELLS</text>
+  <rect x="230" y="100" width="170" height="44" rx="8" class="box" stroke="#64748B"/>
+  <text x="315" y="118" class="t-box">androidApp</text>
+  <text x="315" y="134" class="t-boxsub">Activity · FLAG_SECURE · Autofill</text>
+  <rect x="480" y="100" width="170" height="44" rx="8" class="box" stroke="#64748B"/>
+  <text x="565" y="118" class="t-box">iosApp</text>
+  <text x="565" y="134" class="t-boxsub">Swift · AmplifyAuthBridge</text>
+
+  <!-- Band: app -->
+  <rect x="40" y="180" width="810" height="70" rx="10" fill="#EDE9FE" stroke="#8B5CF6"/>
+  <text x="52" y="197" class="t-band">COMPOSITION ROOT</text>
+  <rect x="300" y="193" width="280" height="44" rx="8" class="box" stroke="#7C3AED"/>
+  <text x="440" y="211" class="t-box">app</text>
+  <text x="440" y="227" class="t-boxsub">Koin startup · root NavHost driven by SessionState</text>
+
+  <path d="M315 146 L385 191" class="dep"/>
+  <path d="M565 146 L495 191" class="dep"/>
+
+  <!-- Band: features -->
+  <rect x="40" y="275" width="810" height="95" rx="10" fill="#E0EDFF" stroke="#3B82F6"/>
+  <text x="52" y="292" class="t-band">FEATURE:*  —  UI + VIEWMODELS (MVI)</text>
+  <rect x="60" y="300" width="140" height="50" rx="8" class="box" stroke="#2563EB"/>
+  <text x="130" y="321" class="t-box">auth</text>
+  <text x="130" y="338" class="t-boxsub">login · register · Google</text>
+  <rect x="215" y="300" width="140" height="50" rx="8" class="box" stroke="#2563EB"/>
+  <text x="285" y="321" class="t-box">unlock</text>
+  <text x="285" y="338" class="t-boxsub">master pw · biometrics</text>
+  <rect x="370" y="300" width="140" height="50" rx="8" class="box" stroke="#2563EB"/>
+  <text x="440" y="321" class="t-box">vault</text>
+  <text x="440" y="338" class="t-boxsub">list · detail · edit</text>
+  <rect x="525" y="300" width="140" height="50" rx="8" class="box" stroke="#2563EB"/>
+  <text x="595" y="321" class="t-box">generator</text>
+  <text x="595" y="338" class="t-boxsub">password generator</text>
+  <rect x="680" y="300" width="140" height="50" rx="8" class="box" stroke="#2563EB"/>
+  <text x="750" y="321" class="t-box">settings</text>
+  <text x="750" y="338" class="t-boxsub">auto-lock · sign out</text>
+
+  <path d="M440 239 L440 297" class="dep"/>
+  <text x="448" y="268" class="t-small">wires nav graphs</text>
+
+  <!-- Band: domain -->
+  <rect x="40" y="395" width="810" height="90" rx="10" fill="#E3F6E8" stroke="#22C55E"/>
+  <text x="52" y="412" class="t-band">DOMAIN  —  PURE KOTLIN</text>
+  <rect x="250" y="410" width="380" height="60" rx="8" class="box" stroke="#16A34A"/>
+  <text x="440" y="430" class="t-box">domain</text>
+  <text x="440" y="447" class="t-boxsub">models · repository interfaces · use cases</text>
+  <text x="440" y="461" class="t-boxsub">SessionState · SessionManager · KeyManager (interfaces)</text>
+
+  <path d="M130 352 L290 407" class="dep"/>
+  <path d="M440 352 L440 407" class="dep"/>
+  <path d="M595 352 L585 407" class="dep"/>
+
+  <!-- Forbidden: feature -> data -->
+  <path d="M760 352 L760 531" stroke="#DC2626" stroke-width="1.8" stroke-dasharray="6 5" fill="none" marker-end="url(#arrowRed)"/>
+  <circle cx="760" cy="442" r="11" fill="#FFFFFF" stroke="#DC2626" stroke-width="1.6"/>
+  <text x="760" y="447" font-size="14" font-weight="700" fill="#DC2626" text-anchor="middle">✕</text>
+  <text x="742" y="446" font-size="11" font-weight="700" fill="#DC2626" text-anchor="end">forbidden</text>
+
+  <!-- Band: data -->
+  <rect x="40" y="510" width="810" height="95" rx="10" fill="#FFF1DC" stroke="#F59E0B"/>
+  <text x="52" y="527" class="t-band">DATA:*  —  IMPLEMENTS DOMAIN INTERFACES</text>
+  <rect x="70" y="535" width="170" height="50" rx="8" class="box" stroke="#D97706"/>
+  <text x="155" y="556" class="t-box">auth</text>
+  <text x="155" y="573" class="t-boxsub">Amplify / IosAuthBridge</text>
+  <rect x="260" y="535" width="170" height="50" rx="8" class="box" stroke="#D97706"/>
+  <text x="345" y="556" class="t-box">session</text>
+  <text x="345" y="573" class="t-boxsub">lock state · auto-lock timer</text>
+  <rect x="450" y="535" width="170" height="50" rx="8" class="box" stroke="#D97706"/>
+  <text x="535" y="556" class="t-box">vault</text>
+  <text x="535" y="573" class="t-boxsub">offline-first + sync</text>
+  <rect x="640" y="535" width="170" height="50" rx="8" class="box" stroke="#D97706"/>
+  <text x="725" y="556" class="t-box">keys</text>
+  <text x="725" y="573" class="t-boxsub">derive · wrap · unwrap vault key</text>
+
+  <path d="M345 533 L380 473" class="dep"/>
+  <path d="M535 533 L500 473" class="dep"/>
+  <text x="448" y="503" class="t-small">implements</text>
+
+  <!-- app -> data (side route) -->
+  <path d="M582 215 H868 V560 H813" class="dep"/>
+  <text x="882" y="400" class="t-small" transform="rotate(90 882 400)" text-anchor="middle">app registers data impls in Koin</text>
+
+  <!-- Band: core -->
+  <rect x="40" y="630" width="810" height="95" rx="10" fill="#EEEEF0" stroke="#94A3B8"/>
+  <text x="52" y="647" class="t-band">CORE:*  —  TECHNICAL, NO BUSINESS LOGIC</text>
+  <rect x="55" y="655" width="108" height="50" rx="8" class="box" stroke="#64748B"/>
+  <text x="109" y="676" class="t-box">designsystem</text>
+  <text x="109" y="693" class="t-boxsub">theme · SecureScreen</text>
+  <rect x="167" y="655" width="108" height="50" rx="8" class="box" stroke="#64748B"/>
+  <text x="221" y="676" class="t-box">common</text>
+  <text x="221" y="693" class="t-boxsub">Clock · AppError</text>
+  <rect x="279" y="655" width="108" height="50" rx="8" class="box" stroke="#64748B"/>
+  <text x="333" y="676" class="t-box">crypto</text>
+  <text x="333" y="693" class="t-boxsub">Argon2id · AES-GCM</text>
+  <rect x="391" y="655" width="108" height="50" rx="8" class="box" stroke="#64748B"/>
+  <text x="445" y="676" class="t-box">securestorage</text>
+  <text x="445" y="693" class="t-boxsub">Keystore · Keychain</text>
+  <rect x="503" y="655" width="108" height="50" rx="8" class="box" stroke="#64748B"/>
+  <text x="557" y="676" class="t-box">database</text>
+  <text x="557" y="693" class="t-boxsub">SQLDelight · encrypted</text>
+  <rect x="615" y="655" width="108" height="50" rx="8" class="box" stroke="#64748B"/>
+  <text x="669" y="676" class="t-box">network</text>
+  <text x="669" y="693" class="t-boxsub">Ktor · TLS pinning</text>
+  <rect x="727" y="655" width="108" height="50" rx="8" class="box" stroke="#64748B" stroke-dasharray="5 4"/>
+  <text x="781" y="676" class="t-box">testing</text>
+  <text x="781" y="693" class="t-boxsub">fakes · test rules</text>
+
+  <path d="M345 587 L335 652" class="dep"/>
+  <path d="M535 587 L555 652" class="dep"/>
+  <path d="M725 587 L670 652" class="dep"/>
+  <text x="575" y="625" class="t-small">uses</text>
+
+  <!-- features -> designsystem/common (left route) -->
+  <path d="M58 325 H28 V680 H52" class="dep"/>
+  <text x="18" y="500" class="t-small" transform="rotate(-90 18 500)" text-anchor="middle">features use designsystem + common only</text>
+
+  <!-- Rules + legend -->
+  <rect x="40" y="750" width="810" height="255" rx="10" class="panel"/>
+  <text x="56" y="778" class="t-panel">Dependency rules · enforced in CI (module-graph assertion)</text>
+  <text x="56" y="806" class="t-rule"><tspan fill="#16A34A" font-weight="700">✓</tspan>  feature:*  →  domain, core:designsystem, core:common</text>
+  <text x="56" y="830" class="t-rule"><tspan fill="#16A34A" font-weight="700">✓</tspan>  data:*  →  domain + technical core:* (crypto, securestorage, database, network)</text>
+  <text x="56" y="854" class="t-rule"><tspan fill="#16A34A" font-weight="700">✓</tspan>  app  →  everything (the only composition root: Koin modules + navigation graphs)</text>
+  <text x="56" y="878" class="t-rule"><tspan fill="#DC2626" font-weight="700">✕</tspan>  feature → data   ·   feature → feature   ·   core → domain / data / feature</text>
+
+  <line x1="56" y1="912" x2="96" y2="912" class="dep"/>
+  <text x="104" y="916" class="t-small">depends on</text>
+  <line x1="196" y1="912" x2="236" y2="912" stroke="#DC2626" stroke-width="1.8" stroke-dasharray="6 5" marker-end="url(#arrowRed)"/>
+  <text x="244" y="916" class="t-small">forbidden</text>
+  <line x1="326" y1="912" x2="366" y2="912" class="back"/>
+  <text x="374" y="916" class="t-small">session transition</text>
+  <rect x="488" y="902" width="34" height="20" rx="4" fill="#FFFFFF" stroke="#64748B" stroke-dasharray="5 4"/>
+  <text x="530" y="916" class="t-small">test-only module</text>
+
+  <text x="56" y="952" class="t-rule"><tspan font-weight="700">Principles:</tspan>  zero-knowledge (server and local DB hold ciphertext only)  ·  session state drives navigation</text>
+  <text x="56" y="974" class="t-rule">·  data + crypto work without UI, so Android Autofill / iOS Credential Provider can reuse them</text>
+  <text x="56" y="996" class="t-small">Convention plugins in build-logic/ give every module type the same Gradle setup.</text>
+
+  <!-- ===================== RIGHT A: NAVIGATION ===================== -->
+  <rect x="900" y="55" width="480" height="305" rx="10" class="panel"/>
+  <text x="916" y="80" class="t-panel">Session-driven navigation</text>
+
+  <rect x="920" y="95" width="440" height="34" rx="8" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1.5"/>
+  <text x="1140" y="117" class="t-box">SessionManager.state : StateFlow&lt;SessionState&gt;</text>
+  <path d="M1010 131 L1010 148" class="dep"/>
+
+  <rect x="935" y="150" width="150" height="40" rx="20" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.5"/>
+  <text x="1010" y="175" class="t-box">SignedOut</text>
+  <rect x="935" y="215" width="150" height="40" rx="20" fill="#FEF3C7" stroke="#D97706" stroke-width="1.5"/>
+  <text x="1010" y="240" class="t-box">Locked</text>
+  <rect x="935" y="280" width="150" height="40" rx="20" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="1010" y="305" class="t-box">Unlocked</text>
+
+  <path d="M1010 192 L1010 212" class="dep"/>
+  <text x="1020" y="207" class="t-small">sign in</text>
+  <path d="M1010 257 L1010 277" class="dep"/>
+  <text x="1020" y="272" class="t-small">unlock</text>
+
+  <path d="M935 296 H921 V235 H932" class="back"/>
+  <path d="M935 308 H908 V170 H932" class="back"/>
+
+  <rect x="1180" y="150" width="185" height="40" rx="8" class="box" stroke="#2563EB"/>
+  <text x="1272" y="167" class="t-box">authGraph</text>
+  <text x="1272" y="182" class="t-boxsub">login · register · verify</text>
+  <rect x="1180" y="215" width="185" height="40" rx="8" class="box" stroke="#2563EB"/>
+  <text x="1272" y="232" class="t-box">unlockGraph</text>
+  <text x="1272" y="247" class="t-boxsub">master password · biometrics</text>
+  <rect x="1180" y="280" width="185" height="40" rx="8" class="box" stroke="#2563EB"/>
+  <text x="1272" y="297" class="t-box">vaultGraph</text>
+  <text x="1272" y="312" class="t-boxsub">+ settings · generator</text>
+
+  <path d="M1087 170 L1177 170" class="dep"/>
+  <path d="M1087 235 L1177 235" class="dep"/>
+  <path d="M1087 300 L1177 300" class="dep"/>
+  <text x="1132" y="164" class="t-small" text-anchor="middle">root graph</text>
+
+  <text x="916" y="345" class="t-small"><tspan fill="#D97706" font-weight="700">↺</tspan> auto-lock / background → Locked</text>
+  <text x="1130" y="345" class="t-small"><tspan fill="#D97706" font-weight="700">↺</tspan> sign out / token expiry → SignedOut</text>
+
+  <!-- ===================== RIGHT B: KEY HIERARCHY ===================== -->
+  <rect x="900" y="375" width="480" height="345" rx="10" class="panel"/>
+  <text x="916" y="400" class="t-panel">Key hierarchy (zero-knowledge)</text>
+
+  <rect x="930" y="415" width="200" height="32" rx="8" fill="#F1F5F9" stroke="#475569" stroke-width="1.5"/>
+  <text x="1030" y="436" class="t-box">Master password</text>
+  <rect x="930" y="467" width="200" height="32" rx="16" fill="#FFFFFF" stroke="#475569" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="1030" y="488" font-size="12" fill="#0F172A" text-anchor="middle">Argon2id · salt · memory-hard</text>
+  <rect x="930" y="519" width="200" height="32" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.5"/>
+  <text x="1030" y="540" class="t-box">Master key (RAM only)</text>
+  <rect x="930" y="571" width="200" height="32" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.5"/>
+  <text x="1030" y="592" class="t-box">Vault key · random 256-bit</text>
+  <rect x="930" y="623" width="200" height="32" rx="16" fill="#FFFFFF" stroke="#475569" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="1030" y="644" font-size="12" fill="#0F172A" text-anchor="middle">AES-256-GCM · nonce per item</text>
+  <rect x="930" y="675" width="200" height="32" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="1030" y="696" class="t-box">Encrypted VaultItems</text>
+
+  <path d="M1030 449 L1030 465" class="dep"/>
+  <path d="M1030 501 L1030 517" class="dep"/>
+  <path d="M1030 553 L1030 569" class="dep"/>
+  <text x="1040" y="565" class="t-small">unwraps</text>
+  <path d="M1030 605 L1030 621" class="dep"/>
+  <path d="M1030 657 L1030 673" class="dep"/>
+
+  <rect x="1165" y="512" width="200" height="44" rx="8" class="box" stroke="#7C3AED"/>
+  <text x="1265" y="530" class="t-box">HKDF → auth hash</text>
+  <text x="1265" y="546" class="t-boxsub">sent to Cognito — never the master pw</text>
+  <path d="M1132 535 L1162 535" class="dep"/>
+
+  <rect x="1165" y="590" width="200" height="44" rx="8" class="box" stroke="#7C3AED"/>
+  <text x="1265" y="608" class="t-box">Keystore / Keychain key</text>
+  <text x="1265" y="624" class="t-boxsub">biometric-gated · also wraps vault key</text>
+  <path d="M1163 605 L1133 592" class="dep"/>
+
+  <rect x="1165" y="662" width="200" height="48" rx="8" fill="#F1F5F9" stroke="#475569" stroke-width="1.5"/>
+  <text x="1265" y="680" class="t-box">Stored: server + local DB</text>
+  <text x="1265" y="697" class="t-boxsub">salt · KDF params · wrapped key · ciphertext</text>
+  <path d="M1132 691 L1162 688" class="dep"/>
+
+  <!-- ===================== RIGHT C: DATA FLOW ===================== -->
+  <rect x="900" y="735" width="480" height="270" rx="10" class="panel"/>
+  <text x="916" y="760" class="t-panel">Offline-first data flow (data:vault)</text>
+
+  <rect x="920" y="778" width="120" height="40" rx="8" class="box" stroke="#2563EB"/>
+  <text x="980" y="803" class="t-box">UI</text>
+  <rect x="1080" y="778" width="120" height="40" rx="8" class="box" stroke="#2563EB"/>
+  <text x="1140" y="803" class="t-box">ViewModel</text>
+  <rect x="1240" y="778" width="120" height="40" rx="8" class="box" stroke="#16A34A"/>
+  <text x="1300" y="803" class="t-box">Use case</text>
+
+  <path d="M1078 798 L1043 798" class="dep"/>
+  <text x="1060" y="792" class="t-small" text-anchor="middle">State</text>
+  <path d="M1238 798 L1203 798" class="dep"/>
+  <text x="1220" y="792" class="t-small" text-anchor="middle">Flow</text>
+
+  <rect x="1240" y="858" width="120" height="40" rx="8" class="box" stroke="#D97706"/>
+  <text x="1300" y="883" class="t-box">Repository</text>
+  <path d="M1300 856 L1300 821" class="dep"/>
+
+  <rect x="920" y="858" width="150" height="40" rx="8" class="box" stroke="#D97706"/>
+  <text x="995" y="883" class="t-box">SyncEngine</text>
+  <path d="M1238 878 L1073 878" class="dep"/>
+  <text x="1155" y="871" class="t-small" text-anchor="middle">pendingSync</text>
+
+  <rect x="1180" y="940" width="180" height="48" rx="8" fill="#DCFCE7" stroke="#16A34A" stroke-width="1.5"/>
+  <text x="1270" y="959" class="t-box">SQLDelight + SQLCipher</text>
+  <text x="1270" y="976" class="t-boxsub">source of truth · encrypted</text>
+  <path d="M1300 937 L1300 901" class="dep2"/>
+
+  <rect x="920" y="940" width="150" height="48" rx="8" class="box" stroke="#64748B"/>
+  <text x="995" y="959" class="t-box">Ktor VaultApi</text>
+  <text x="995" y="976" class="t-boxsub">ciphertext only</text>
+  <path d="M995 901 L995 937" class="dep2"/>
+  <text x="1003" y="924" class="t-small">push / pull</text>
+
+  <path d="M1073 893 L1177 948" class="dep2"/>
+  <text x="1108" y="944" class="t-small" text-anchor="end">merge</text>
+</svg>
