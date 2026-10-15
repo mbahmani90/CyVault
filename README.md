@@ -62,6 +62,12 @@ feature/
 └── di/             Koin module
 ```
 
+### Target architecture
+
+The diagram below shows the proposed modular architecture the project is moving toward: module dependency rules, session-driven navigation, the zero-knowledge key hierarchy, and the offline-first data flow.
+
+![CyVault proposed modular architecture](docs/architecture.svg)
+
 ### MVI
 
 Every screen has three types:
